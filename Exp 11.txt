@@ -1,0 +1,41 @@
+Step 1: Start the capture
+
+Open Wireshark and double-click your active interface (Wi-Fi or Ethernet), the one with a moving graph line.
+Leave it running while you do Steps 2 to 4.
+
+Step 2: Generate ICMP traffic
+
+In CMD:
+
+ping google.com
+
+Step 3: Generate TCP and HTTP traffic
+
+Plain HTTP sites work best here, because HTTPS encrypts the HTTP fields. In CMD:
+
+curl http://example.com
+curl http://neverssl.com
+
+You can also open http://neverssl.com or http://example.com in your browser. Make sure the address starts with http://, because browsers may auto-switch to https.
+
+Step 4: Stop the capture
+
+Click the red Stop button in Wireshark.
+
+Step 5: Analyse ICMP
+
+Type icmp in the display filter bar and press Enter.
+Click an Echo (ping) request packet and expand Internet Control Message Protocol.
+Note the Source IP, Destination IP, Type (8 for request), Code (0), Sequence Number and Data.
+Click the matching Echo (ping) reply and note Type 0 and the swapped source and destination.
+
+Step 6: Analyse TCP
+
+Apply the filter tcp.
+To find the three-way handshake quickly, use: tcp.flags.syn == 1
+
+Step 7: Analyse HTTP
+
+Apply the filter http.
+For the request only, use: http.request.method == "GET"
+
